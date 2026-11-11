@@ -59,15 +59,14 @@
                                     <div class="flex items-center justify-center gap-3">
 
                                         {{-- Edit Button --}}
-                                        <a 
+                                        <a  href="/admin/projects/{{ $project->id }}/edit"
                                             class="text-blue-600 hover:text-blue-800"
                                             title="Edit Service">
                                             Edit
                                         </a>
 
                                         {{-- Delete Button --}}
-                                        <form
-                                            
+                                        <form action="/admin/projects/{{ $project->id }}"
                                             method="POST"
                                             onsubmit="return confirm('Are you sure you want to delete this service?')">
 
@@ -79,7 +78,6 @@
                                                 title="Delete Service">
                                                 Delete
                                             </button>
-
                                         </form>
 
                                     </div>

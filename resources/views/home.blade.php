@@ -44,6 +44,21 @@
                         <p class="text-muted">
                             {{$project->description}}
                         </p>
+
+                        {{-- GitHub & Live URL Links --}}
+                            <div class="mt-4 pt-3 border-top d-flex justify-content-center gap-2">
+                                @if ($project->github_url)
+                                    <a href="{{ $project->github_url }}" target="_blank" class="btn btn-outline-dark btn-sm">
+                                        GitHub
+                                    </a>
+                                @endif
+
+                                @if ($project->live_url)
+                                    <a href="{{ $project->live_url }}" target="_blank" class="btn btn-primary btn-sm">
+                                        Live Demo
+                                    </a>
+                                @endif
+                            </div>
                     </div>
                 </div>
                 @endforeach

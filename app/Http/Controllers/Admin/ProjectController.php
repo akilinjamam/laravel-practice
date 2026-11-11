@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Project;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProjectController extends Controller
 {
@@ -62,7 +63,7 @@ class ProjectController extends Controller
      */
     public function edit(Project $project)
     {
-        //
+        return view('admin.projects.edit', ['project' => $project]);
     }
 
     /**
@@ -70,7 +71,23 @@ class ProjectController extends Controller
      */
     public function update(Request $request, Project $project)
     {
-        //
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'github_url' => 'nullable|url',
+            'live_url' => 'nullable|url',
+            'image' => 'nullable|image|max:2048',
+        ]);
+
+        if ($request->hasFile('image')) {
+            if ($project->image_path) {
+                Storage::disk('public')->delete($project->image_path);
+            }
+            $validated['image_path'] = $request->file('image')->store('projects', 'public');
+        }
+        $project->update($validated);
+
+        return redirect('/admin/projects')->with('success', 'Project updated');
     }
 
     /**
@@ -78,6 +95,12 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
-        //
+        if ($project->image_path) {
+            Storage::disk('public')->delete($project->image_path);
+        }
+
+        $project->delete();
+
+        return redirect('/admin/projects')->with('success', 'Project deleted!');
     }
 }
